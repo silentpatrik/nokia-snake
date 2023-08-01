@@ -1,9 +1,9 @@
 # Nokia Snake Game
-the nokia 3110,3210,6210(...) game "Snake" using only javascript with only tailwindcss as dependecy...
+the nokia 3110,3210,6210(...) game "Snake" using only javascript with tailwindcss as dependecy...
 
-Finished game: https://snake.silentridgemedia.com
-Mirror: https://snake.silentridge.workers.dev/
-ChatGPT Share link: https://chat.openai.com/share/b7498d94-d5ce-4de0-8a5c-8aef3927d0ff
+- Finished game: https://snake.silentridgemedia.com
+- Mirror: https://snake.silentridge.workers.dev/
+- ChatGPT Share link: https://chat.openai.com/share/b7498d94-d5ce-4de0-8a5c-8aef3927d0ff
 
 
 Original copy of the chat with ChatGPT 4 in Swedish:
