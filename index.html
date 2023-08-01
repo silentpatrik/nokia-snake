@@ -1,163 +1,201 @@
-<style>
-  .snake {
-    background-color: lightgreen;
-  }
+<!doctype html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#" >
+<head>	
+	
+<!-- Adsense BEGIN (auto ad disabled)
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8908411313094578" crossorigin="anonymous"></script>
 
-  .snake-head {
-    background-color: green;
-  }
-
-  .apple {
-    background-color: red;
-  }
-
-  .cell {
-    border: 1px solid black;
-  }
-</style>
-<div class="bg-slate-900 flex flex-col items-center justify-center w-screen h-screen">
-  <div id="score" class="text-3xl font-bold mono text-black bg-white  w-64 rounded-t-lg  p-2 ">Score: 0</div>
-  <div class="bg-black/50 p">
-    <canvas id="game-board" class="shadow-lg w-64 h-64 b bg-green-500 grid grid-cols-16 gap-y-1 ">/canvas>
-  </div>
-</div>
 <script>
-  const gameBoard = document.getElementById("game-board");
-  const context = gameBoard.getContext("2d");
-  const cellSize = 20;
-  let score = 0;
-  const DIRECTION = {
-    UP: {
-      x: 0,
-      y: -1
-    },
-    DOWN: {
-      x: 0,
-      y: 1
-    },
-    LEFT: {
-      x: -1,
-      y: 0
-    },
-    RIGHT: {
-      x: 1,
-      y: 0
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8908411313094578",
+    enable_page_level_ads: true,
+    overlays: {bottom: true}
+  });
+</script>
+
+ Adsense END -->	
+	
+	
+	
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+<title>Nokia Snake</title>
+<meta name="description" content="Snake from old nokia phones written in vanilla javascript with tailwindcss"/>
+<meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+<link rel="canonical" href="https://snake.silentridgemedia.com" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="game" />
+<meta property="og:title" content="Nokia Snake Browser Version " />
+<meta property="og:description" content="Classic Nokia Game Snake in browser using vanilla javascript and tailwindcss " />
+<meta property="og:url" content="https://snake.silentridgemedia.com" />
+<meta property="og:site_name" content="Nokia Snake Game in Browser" />
+<meta property="article:tag" content="image-to-image" />
+<meta property="article:tag" content="models" />
+<meta property="article:tag" content="text-to-image" />
+<meta property="article:section" content="Tutorial" />
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    .snake {
+      background-color: lightgreen;
     }
-  };
-  let direction = DIRECTION.RIGHT;
-  let apple = null;
-  let speed = 2;
-  let intervalId;
-  let snake = [{
-    x: 0,
-    y: 0
-  }];
-
-  function getRandomPosition() {
-    const x = Math.floor((Math.random() * gameBoard.width) / cellSize);
-    const y = Math.floor((Math.random() * gameBoard.height) / cellSize);
-    return {
-      x,
-      y
+  
+    .snake-head {
+      background-color: green;
+    }
+  
+    .apple {
+      background-color: red;
+    }
+  
+    .cell {
+      border: 1px solid black;
+    }
+  </style>
+  <div class="bg-slate-900 flex flex-col items-center justify-center w-screen h-screen">
+    <div id="score" class="text-3xl font-bold mono text-black bg-white  w-64 rounded-t-lg  p-2 ">Score: 0</div>
+    <div class="bg-black/50 p">
+      <canvas id="game-board" class="shadow-lg w-64 h-64 b bg-green-500 grid grid-cols-16 gap-y-1 ">/canvas>
+    </div>
+  </div>
+  <script>
+    const gameBoard = document.getElementById("game-board");
+    const context = gameBoard.getContext("2d");
+    const cellSize = 20;
+    let score = 0;
+    const DIRECTION = {
+      UP: {
+        x: 0,
+        y: -1
+      },
+      DOWN: {
+        x: 0,
+        y: 1
+      },
+      LEFT: {
+        x: -1,
+        y: 0
+      },
+      RIGHT: {
+        x: 1,
+        y: 0
+      }
     };
-  }
-
-  function isGameOver() {
-    const [head, ...tail] = snake;
-    return tail.some((segment) => segment.x === head.x && segment.y === head.y);
-  }
-
-  function snakeAteApple() {
-    return apple.x === snake[0].x && apple.y === snake[0].y;
-  }
-
-  function drawCell(cell, color) {
-    context.fillStyle = color;
-    context.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
-    context.strokeStyle = "black"; // Färg på ramen
-    context.lineWidth = 1; // Bredden på ramen
-    context.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize); // Rita ramen
-  }
-
-  function drawSnake() {
-    snake.forEach((cell, index) => {
-      drawCell(cell, index === 0 ? "green" : "lightgreen");
-    });
-  }
-
-  function drawGrid() {
-    context.strokeStyle = "black";
-    context.lineWidth = 1;
-    for (let i = 0; i < cellSize; i++) {
-      for (let j = 0; j < cellSize; j++) {
-        context.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
+    let direction = DIRECTION.RIGHT;
+    let apple = null;
+    let speed = 2;
+    let intervalId;
+    let snake = [{
+      x: 0,
+      y: 0
+    }];
+  
+    function getRandomPosition() {
+      const x = Math.floor((Math.random() * gameBoard.width) / cellSize);
+      const y = Math.floor((Math.random() * gameBoard.height) / cellSize);
+      return {
+        x,
+        y
+      };
+    }
+  
+    function isGameOver() {
+      const [head, ...tail] = snake;
+      return tail.some((segment) => segment.x === head.x && segment.y === head.y);
+    }
+  
+    function snakeAteApple() {
+      return apple.x === snake[0].x && apple.y === snake[0].y;
+    }
+  
+    function drawCell(cell, color) {
+      context.fillStyle = color;
+      context.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+      context.strokeStyle = "black"; // Färg på ramen
+      context.lineWidth = 1; // Bredden på ramen
+      context.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize); // Rita ramen
+    }
+  
+    function drawSnake() {
+      snake.forEach((cell, index) => {
+        drawCell(cell, index === 0 ? "green" : "lightgreen");
+      });
+    }
+  
+    function drawGrid() {
+      context.strokeStyle = "black";
+      context.lineWidth = 1;
+      for (let i = 0; i < cellSize; i++) {
+        for (let j = 0; j < cellSize; j++) {
+          context.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
+        }
       }
     }
-  }
-
-  function drawApple() {
-    drawCell(apple, "red");
-  }
-
-  function gameLoop() {
-    if (isGameOver()) {
-      clearInterval(intervalId);
-      alert(`Game over! Your final score is: ${score}`);
-      return;
+  
+    function drawApple() {
+      drawCell(apple, "red");
     }
-    if (snakeAteApple()) {
-      score++;
-      document.getElementById("score").textContent = "Score: " + score;
-      snake.push({}); // Add new segment to snake
-      apple = getRandomPosition();
-      speed += 0.02; // Increase speed
+  
+    function gameLoop() {
+      if (isGameOver()) {
+        clearInterval(intervalId);
+        alert(`Game over! Your final score is: ${score}`);
+        return;
+      }
+      if (snakeAteApple()) {
+        score++;
+        document.getElementById("score").textContent = "Score: " + score;
+        snake.push({}); // Add new segment to snake
+        apple = getRandomPosition();
+        speed += 0.02; // Increase speed
+      }
+      const head = {
+        ...snake[0]
+      }; // Start with head of snake
+      switch (direction) {
+        case DIRECTION.LEFT:
+          head.x -= 1;
+          break;
+        case DIRECTION.RIGHT:
+          head.x += 1;
+          break;
+        case DIRECTION.UP:
+          head.y -= 1;
+          break;
+        case DIRECTION.DOWN:
+          head.y += 1;
+          break;
+      }
+      snake.unshift(head); // Add new head to snake
+      snake.pop(); // Remove tail segment
+      context.clearRect(0, 0, gameBoard.width, gameBoard.height);
+      drawGrid(); // Rita ut rutmönstret
+      drawApple();
+      drawSnake();
     }
-    const head = {
-      ...snake[0]
-    }; // Start with head of snake
-    switch (direction) {
-      case DIRECTION.LEFT:
-        head.x -= 1;
-        break;
-      case DIRECTION.RIGHT:
-        head.x += 1;
-        break;
-      case DIRECTION.UP:
-        head.y -= 1;
-        break;
-      case DIRECTION.DOWN:
-        head.y += 1;
-        break;
+  
+    function handleKeyDown(event) {
+      switch (event.key) {
+        case "w":
+        case "W":
+          if (direction !== DIRECTION.DOWN) direction = DIRECTION.UP;
+          break;
+        case "a":
+        case "A":
+          if (direction !== DIRECTION.RIGHT) direction = DIRECTION.LEFT;
+          break;
+        case "s":
+        case "S":
+          if (direction !== DIRECTION.UP) direction = DIRECTION.DOWN;
+          break;
+        case "d":
+        case "D":
+          if (direction !== DIRECTION.LEFT) direction = DIRECTION.RIGHT;
+          break;
+      }
     }
-    snake.unshift(head); // Add new head to snake
-    snake.pop(); // Remove tail segment
-    context.clearRect(0, 0, gameBoard.width, gameBoard.height);
-    drawGrid(); // Rita ut rutmönstret
-    drawApple();
-    drawSnake();
-  }
-
-  function handleKeyDown(event) {
-    switch (event.key) {
-      case "w":
-      case "W":
-        if (direction !== DIRECTION.DOWN) direction = DIRECTION.UP;
-        break;
-      case "a":
-      case "A":
-        if (direction !== DIRECTION.RIGHT) direction = DIRECTION.LEFT;
-        break;
-      case "s":
-      case "S":
-        if (direction !== DIRECTION.UP) direction = DIRECTION.DOWN;
-        break;
-      case "d":
-      case "D":
-        if (direction !== DIRECTION.LEFT) direction = DIRECTION.RIGHT;
-        break;
-    }
-  }
-  apple = getRandomPosition();
-  intervalId = setInterval(gameLoop, 1000 / speed);
-  window.addEventListener("keydown", handleKeyDown);
-</script>
+    apple = getRandomPosition();
+    intervalId = setInterval(gameLoop, 1000 / speed);
+    window.addEventListener("keydown", handleKeyDown);
+  </script>
